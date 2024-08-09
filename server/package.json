@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon Server.mjs"
+    "dev": "nodemon Server.mjs",
+    "start": "node Server.mjs"
   },
   "keywords": [],
   "author": "Julian Jimenez",

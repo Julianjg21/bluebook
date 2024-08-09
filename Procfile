@@ -1,1 +1,2 @@
-web: node server/Server.mjs
+web: npm --prefix server start
+

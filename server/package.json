@@ -1,11 +1,11 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "server.mjs",
+  "main": "Server.mjs",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app.mjs"
+    "dev": "nodemon Server.mjs"
   },
   "keywords": [],
   "author": "Julian Jimenez",

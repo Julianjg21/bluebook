@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node server/Server.mjs",
-    "heroku-postbuild": "npm install --prefix client && npm run build --prefix client"
+    "heroku-postbuild": "npm install --prefix server/client && npm run build --prefix server/client"
   },
   "keywords": [],
   "author": "Julian Jimenez",

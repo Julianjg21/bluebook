@@ -5,7 +5,7 @@
   "main": "Server.mjs",
   "type": "module",
   "scripts": {
-    "start": "node /server/Server.mjs",
+    "start": "node C:/server/Server.mjs",
     "heroku-postbuild": "npm install --prefix server/client && npm run build --prefix server/client"
   },
   "keywords": [],

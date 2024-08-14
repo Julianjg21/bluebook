@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon Server.mjs",
     "start": "node Server.mjs",
-    "heroku-postbuild": "npm install --prefix server/client && npm run build --prefix server/client"
+    "heroku-postbuild": "npm install --prefix client && npm run build --prefix client"
   },
   "keywords": [],
   "author": "Julian Jimenez",

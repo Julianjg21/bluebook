@@ -1,14 +1,20 @@
 {
-  "name": "blue_notebook",
+  "name": "server",
   "version": "1.0.0",
-  "description": "��#\u0000 \u0000b\u0000l\u0000u\u0000e\u0000b\u0000o\u0000o\u0000k\u0000\r\u0000 \u0000",
-  "main": "server/Server.mjs",
+  "main": "Server.mjs",
   "type": "module",
   "scripts": {
-    "start": "node server/Server.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon Server.mjs",
+    "start": "node Server.mjs",
     "heroku-postbuild": "npm install --prefix server/client && npm run build --prefix server/client"
   },
   "keywords": [],
   "author": "Julian Jimenez",
-  "license": "ISC"
+  "license": "ISC",
+  "description": "The server receives and responds to client requests for our notebook software.",
+  "dependencies": {
+    "express": "^4.19.2",
+    "nodemon": "^3.1.4"
+  }
 }

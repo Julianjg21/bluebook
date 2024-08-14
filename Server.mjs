@@ -23,6 +23,6 @@ app.listen(PORT, (err) => {
   if (err) {
     console.error(`Error al iniciar el servidor: ${err}`);
   } else {
-    console.log('Servidor creado en el puerto 2128');
+    console.log(`Servidor creado en el puerto ${PORT}`);
   }
 });

@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 //Path to 'public' directory inside 'client'
-const publicPath = path.join(__dirname, 'client/build');
+const publicPath = path.join(__dirname, 'server/client/build');
 //Configure the middleware to serve static filesy
 app.use(express.static(publicPath));
 

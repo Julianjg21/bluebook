@@ -1,0 +1,15 @@
+{
+  "folder-customization.folders": [
+    {
+      "path": "blue_notebook\\client\\",
+      "color": "foldercustomization.AnsiColor33"
+    },
+    {
+      "path": "blue_notebook\\client\\src\\",
+      "color": "foldercustomization.AnsiColor118"
+    },
+    {
+      "path": "blue_notebook\\client\\src\\components\\"
+    }
+  ]
+}

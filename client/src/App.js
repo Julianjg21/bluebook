@@ -1,15 +1,30 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+
 import LoginPage from "./pages/LoginPage";
+import PrivateRoute from "./utils/PrivateRoute.mjs";
+import HomePage from "./pages/HomePage";
 
 function App() {
   return (
     <div className="App">
       <Router>
         <Routes>
-          <Route path="/login/*" element={<LoginPage />} />
-          {/* Redirige a /login si no se especifica una ruta */}
-          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/login" element={<LoginPage />} />
+          
+        {/*Main route that handles private routes */}
+          <Route path="/" element={<PrivateRoute />}>
+           {/*Automatically redirect from "/" to "/home" */}
+            <Route index element={<Navigate to="/home" replace />} />
+            
+         {/*Defines the parent route with "/*" suffix to allow child routes */}
+            <Route path="home/*" element={<HomePage />} />
+          </Route>
         </Routes>
       </Router>
     </div>

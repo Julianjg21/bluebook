@@ -6,7 +6,8 @@
 /client/build
 /.pnp
 .pnp.js
-
+/bd.md
+/configs.env
 # testing
 /coverage
 

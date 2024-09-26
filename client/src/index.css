@@ -6,6 +6,27 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+/* Resetea los márgenes y el padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Asegúrate de que el body ocupe el 100% de ancho */
+html, body {
+  width: 100%;
+  overflow-x: hidden; /* Evita el scroll horizontal */
+}
+
+/* Estilo para el fondo */
+.background-image {
+  width: 100vw; /* Asegura que ocupe todo el ancho de la ventana */
+  height: 100vh; /* Asegura que ocupe todo el alto de la ventana */
+
+  background-size: cover; /* Ajusta la imagen al tamaño del contenedor */
+  background-position: center; /* Centra la imagen */
+}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
@@ -22,7 +43,7 @@ code {
 
 @media (max-width: 768px) {
   .auth-cols {
-    width: 100%;
+    width: 95%;
   }
 
   .auth-container {
@@ -73,5 +94,69 @@ code {
   width: auto;
   height: auto;
   max-width: 100%;
+  cursor: pointer;
+}
+
+
+/*menu*/
+
+.blue-custom-color {
+  background-color:rgb(13, 110, 253);
+}
+
+.imga{
+  width: 50%;
+  height: 50%;
+}
+
+.grey-color{
+  background-color:rgb(217, 217, 217);
+}
+
+
+.h-columns{
+  height: 100vh;
+}
+
+.custom-checkbox {
+  width: 20px;
+  height: 20px;
+}
+
+
+/*watchNotesAndTasks*/
+.boxx {
+  height: 15rem;
+  overflow: hidden; 
+  display: flex;
+  flex-direction: column;
+}
+
+
+.boxx .col-12 p {
+  margin: 0;
+  width: 100%; 
+  word-wrap: break-word;
+}
+
+@media (max-width: 575.98px) {
+ /* 
+  .dateWidth{
+    width:50%;
+  } */
+  .h-columns {
+    height: auto !important;
+    padding: 10px 0;
+  }
+  .boxx {
+    height: 15rem;
+  }
+
+  .hide-colum{
+    content-visibility: hidden;  }
+  
+}
+
+.pointer{
   cursor: pointer;
 }

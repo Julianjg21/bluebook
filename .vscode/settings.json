@@ -11,5 +11,6 @@
     {
       "path": "blue_notebook\\client\\src\\components\\"
     }
-  ]
+  ],
+  "commentTranslate.hover.enabled": true
 }

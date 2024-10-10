@@ -12,7 +12,7 @@ const PrivateRoute = () => {
   }
 
  //Check if the user is authenticated to allow access to the route
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
+  return isAuthenticated ? <Outlet /> : <Navigate to="/main" />;
 };
 
 export default PrivateRoute;

@@ -3,7 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 import API_ROUTES from "../../../configs/ApiEndPoints.mjs";
 
-const FetchAddNotes = () => {
+const FetchUpdateTasks = () => {
   const [alert, setAlert] = useState({
     show: false,
     title: "",
@@ -11,25 +11,26 @@ const FetchAddNotes = () => {
     variant: "",
   });
 
-  const addNote = async (data ) => {
+  const updateTask = async (id, data ) => {
     try {
-      await axios.post( API_ROUTES.addNotes , data);
+      await axios.put(`${API_ROUTES.editTasks}/${id}`, data);
 
       setAlert({
         show: true,
-        title: "Success",
-        message: "¡La nota se ha guardado con éxito!",
-        variant: "success",
+        title: 'Éxito',
+        message: '¡Tarea modificada con éxito!',
+        variant: 'success'
       });
 
       // Ocultar alerta después de 5 segundos
     } catch (error) {
-      console.error("Failed to update note:", error);
+      console.error("Failed to update task:", error);
+      //Show an error message if something fails
       setAlert({
         show: true,
-        title: "Error",
-        message: "No se ha podido guardar la nota. Intenta nuevamente.",
-        variant: "danger",
+        title: 'Error',
+        message: 'No se ha podido modificar la tarea. Intenta nuevamente.',
+        variant: 'danger'
       });
     } finally {
       setTimeout(
@@ -43,7 +44,7 @@ const FetchAddNotes = () => {
     setAlert({ ...alert, show: false });
   };
 
-  return { alert, addNote, handleCloseAlert };
+  return { alert, updateTask, handleCloseAlert };
 };
 
-export default FetchAddNotes;
+export default FetchUpdateTasks;

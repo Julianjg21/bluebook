@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
-import { Modal } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleExclamation,
@@ -9,81 +8,109 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { RenderContext } from "../../hooks/contexts/renderContext";
 import API_ROUTES from "../../configs/ApiEndPoints.mjs";
+import CustomAlert from "../../common/Alerts/CustomAlert";
+
 function RegisterForm() {
-  //State to handle the form input fields
-  const [name, setName] = useState(""); //Store the user name
-  const [email, setEmail] = useState(""); //Store the user's email
-  const [password, setPassword] = useState(""); //Store the user's password
-  const [typeConfirmation, setTypeConfirmation] = useState(false); //Stores whether the operation was successful (true) or failed (false)
-  //We get the function to render other components from the context
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { renderComponent } = useContext(RenderContext);
 
-  //State to handle the message displayed in the modal
-  const [Message, setMessage] = useState("");
+  const [iconAlert, setIconAlert] = useState(null);
+  const [alert, setAlert] = useState({
+    show: false,
+    title: "",
+    message: "",
+    variant: "",
+  });
 
-  //State to control whether the message modal should be displayed or not
-  const [showMessage, setShowMessage] = useState(false);
-
-  //Handles registration form submission
   const handleSubmit = async (event) => {
-    event.preventDefault(); //Prevent page reload when submitting the form
-    const data = {
-      name,
-      email,
-      password, //We get the form data
-    };
+    event.preventDefault();
+    const data = { name, email, password };
 
     try {
-     //We send the form data to the server
-      const sendFormData = await axios.post(
-        API_ROUTES.sendKeysRegister,
-        data
-      );
-
-      //If the operation is successful, we display the confirmation message
-      setShowMessage(true);
-      setTypeConfirmation(true);
-      setMessage(sendFormData.data.message);
+      const sendFormData = await axios.post(API_ROUTES.sendKeysRegister, data);
+      setIconAlert(faCircleCheck);
+      setAlert({
+        show: true,
+        title: "Éxito",
+        message: sendFormData.data.message,
+        variant: "success",
+      });
+      setTimeout(() => setAlert((prevAlert) => ({ ...prevAlert, show: false })), 7000);
     } catch (error) {
-     //If there is an error, we display the error message
-      const errorMessage =
-        error.response?.data?.error ||
-        "Completa los campos correctamente e intentalo de nuevo."; //Custom error message
-      setShowMessage(true);
-      setTypeConfirmation(false); //Indicamos que la ooperation was unsuccessful
-      setMessage(errorMessage); //Show the error message
-      console.error(
-        "Error trying to register data",
-        error.response ? error.response.data : error.message
-      );
+      setIconAlert(faCircleExclamation);
+      setAlert({
+        show: true,
+        title: "Error",
+        message: error.response?.data?.error || "Completa los campos correctamente.",
+        variant: "danger",
+      });
+      setTimeout(() => setAlert((prevAlert) => ({ ...prevAlert, show: false })), 7000);
     }
   };
 
+  const handleCloseAlert = () => {
+    setAlert({ ...alert, show: false });
+  };
+
+
   return (
     <div className="p-0">
+      <div className="row d-none d-sm-block">
+        <div className="col-5"></div>
+        <div className="col-5"></div>
+        <div className="col-2 mt-5"></div>
+      </div>
+
+      <div className="row">
+        <div className="col-3"></div>
+        <div className="col-6  text-info align-content-center auth-cols "  style={{
+        position: 'fixed',
+        top: '20px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+
+      }}
+
+      >
+      <CustomAlert
+        title={alert.title}
+        message={
+          <>
+            {alert.message} <FontAwesomeIcon icon={iconAlert} />
+          </>
+        }
+        variant={alert.variant}
+        show={alert.show}
+        onClose={handleCloseAlert}
+      />
+     </div>
+        <div className="col-1"></div>
+      </div>
       {/*Top section with spacing */}
       <div className="row">
         <div className="col-5"></div>
         <div className="col-5"></div>
-        <div className="col-2 mt-5"></div>
+        <div className="col-2 mt-0 mt-md-5"></div>
       </div>
       {/*Registration form title */}
       <div className="row">
         <div className="col-3"></div>
         <div className="col-6 bg-white text-info align-content-center border border-1 border-primary auth-cols rounded-1 border border-2 border-primary-emphasis">
-          <h1 className="fs-6 text-primary mt-2 text-center">Blue NoteBook</h1>
+          <h1 className="fs-6 text-primary mt-0 mt-md-2 text-center">Blue NoteBook</h1>
         </div>
         <div className="col-3"></div>
       </div>
 
-    {/*Registration form */}
+      {/*Registration form */}
       <div className="row">
         <div className="col-3"></div>
         <div className="col-6 auth-cols">
           <div className="row bg-white">
             <form onSubmit={handleSubmit}>
               <div className="row">
-               {/*Button to return to the previous component */}
+                {/*Button to return to the previous component */}
                 <div className="col-1 p-0">
                   <button
                     type="button"
@@ -94,15 +121,15 @@ function RegisterForm() {
                   </button>
                 </div>
                 <div className="col-10">
-                  <h1 className="fs-5 mt-3 text-primary-emphasis text-center">
+                  <h1 className="fs-5 mt-1 mt-md-3 text-primary-emphasis text-center">
                     Registrarse
                   </h1>
                 </div>
                 <div className="col-1"></div>
               </div>
 
-              <div className="row mt-2">
-                <div className="col-12 d-flex flex-column mt-4">
+              <div className="row mt-0 mt-md-2">
+                <div className="col-12 d-flex flex-column mt-0 mt-md-4">
                   <label
                     className="mb-1 loginLabelTxt fw-semibold"
                     htmlFor="userName"
@@ -137,7 +164,6 @@ function RegisterForm() {
                 </div>
               </div>
 
-          
               <div className="row mt-2">
                 <div className="col-12 d-flex flex-column">
                   <label
@@ -173,45 +199,6 @@ function RegisterForm() {
           </div>
         </div>
         <div className="col-3"></div>
-      </div>
-
-    {/*Modal to display error or confirmation messages */}
-      <div>
-        <Modal
-          size="sm"
-          show={showMessage}
-          onHide={() => setShowMessage(false)}
-          aria-labelledby="example-modal-sizes-title-sm"
-        >
-          <Modal.Header closeButton>
-            <Modal.Title
-              id="example-modal-sizes-title-sm"
-              className={typeConfirmation ? "text-success" : "text-danger"}
-            >
-              {typeConfirmation ? "Confirmation" : "Error"}
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <p className="text-center">{Message}</p>
-
-            {/*Confirmation or error icons in the modal */}
-            {typeConfirmation ? (
-              <div className="d-flex justify-content-center">
-                <FontAwesomeIcon
-                  className="text-success"
-                  icon={faCircleCheck}
-                />
-              </div>
-            ) : (
-              <div className="d-flex justify-content-center">
-                <FontAwesomeIcon
-                  icon={faCircleExclamation}
-                  className="text-danger"
-                />
-              </div>
-            )}
-          </Modal.Body>
-        </Modal>
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import API_ROUTES from "../../../configs/ApiEndPoints.mjs";
 
 const FetchGetTasks = () => {
-    const [tasksList, setTasksList] = useState([]);
+  const [tasksList, setTasksList] = useState([]);
   const [loading, setLoading] = useState(true); // Estado de carga
   const [error, setError] = useState(null); // Estado de error
 
@@ -34,10 +34,10 @@ const FetchGetTasks = () => {
         );
       } finally {
       setLoading(false); // Finalizar estado de carga
-    }handleGetTasks();
+    }
   };
 
- /* 
+ /*
   */ // Solo una vez al montar
 
   // Retorna las notas, el estado de carga, error y una función para refrescar

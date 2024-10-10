@@ -1,26 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Modal, ModalHeader } from "react-bootstrap";
-import axios from "axios";
 import CustomAlert from "../../Alerts/CustomAlert";
-import API_ROUTES from "../../../configs/ApiEndPoints.mjs";
+import FetchUpdateTasks from "../../../hooks/apis/tasksFetch/FetchUpdateTasks.mjs";
 
-function EditTaskModal({ taskData, stateEditTaskModal, handleCloseEditTaskModal }) {
+function EditTaskModal({
+  taskData,
+  stateEditTaskModal,
+  handleCloseEditTaskModal,
+}) {
   //States to handle task values
   const [id, setId] = useState(""); //Store the task id
-  const [title, setTitle] = useState("");//Store the task title
+  const [title, setTitle] = useState(""); //Store the task title
   const [description, setDescription] = useState(""); //Store the description of the task
   const [due_date, setDue_date] = useState(""); //Store the expiration date
   const [priority, setPriority] = useState(""); //Store the priority of the task
   const [selectedDateButton, setSelectedDateButton] = useState(); //Store the selected button for the date
   const [selectedPriorityButton, setSelectedPriorityButton] = useState(""); //Store the selected button for priority
 
- //State to handle alerts
-  const [alert, setAlert] = useState({
-    show: false,
-    title: '',
-    message: '',
-    variant: ''
-  });
+  const { alert, updateTask, handleCloseAlert } = FetchUpdateTasks();
 
   //useEffect is executed every time the task data (taskData) changes
   useEffect(() => {
@@ -51,14 +48,14 @@ function EditTaskModal({ taskData, stateEditTaskModal, handleCloseEditTaskModal 
     }
   };
 
-//Handles button selection for priority
+  //Handles button selection for priority
   const handleButtonPriority = (event, buttonId) => {
     event.preventDefault();
     setSelectedPriorityButton(buttonId);
     setPriority(buttonId); // Actualiza el valor de la prioridad
   };
 
- //Handles the change in the manually selected due date
+  //Handles the change in the manually selected due date
   const handleEditDate = (event) => {
     setDue_date(event.target.value);
     setSelectedDateButton("inputDate");
@@ -67,35 +64,14 @@ function EditTaskModal({ taskData, stateEditTaskModal, handleCloseEditTaskModal 
   //Handles editing and sending the task to the server
   const handleSubmit = async (e) => {
     e.preventDefault();
-   
     const data = {
-      title, description, due_date, priority //Data to send
+      title,
+      description,
+      due_date,
+      priority, //Data to send
     };
-    try {
-      await axios.put(`${API_ROUTES.editTasks}/${id}`, data); //Call the endpoint to update the task
-      setAlert({
-        show: true,
-        title: 'Éxito',
-        message: '¡Tarea modificada con éxito!',
-        variant: 'success'
-      });
-      setTimeout(() => setAlert({ ...alert, show: false }), 3000);//Close the alert after 3 seconds
-    } catch (error) {
-      console.error("Failed to update task:", error);
- //Show an error message if something fails
-      setAlert({
-        show: true,
-        title: 'Error',
-        message: 'No se ha podido modificar la tarea. Intenta nuevamente.',
-        variant: 'danger'
-      });
-      setTimeout(() => setAlert({ ...alert, show: false }), 5000); //Close the alert after 5 seconds
-    }
-  };
-
- //Manually close the alert
-  const handleCloseAlert = () => {
-    setAlert({ ...alert, show: false });
+    await updateTask(id, data);
+    handleCloseEditTaskModal();
   };
 
   return (
@@ -103,12 +79,12 @@ function EditTaskModal({ taskData, stateEditTaskModal, handleCloseEditTaskModal 
       <ModalHeader closeButton>
         <Modal.Title className="fs-5 text-secondary">Edit Task</Modal.Title>
       </ModalHeader>
-      <CustomAlert 
-        title={alert.title}  //Pass the title
-        message={alert.message} 
-        variant={alert.variant} 
-        show={alert.show} 
-        onClose={handleCloseAlert}//Handle alert closure
+      <CustomAlert
+        title={alert.title} //Pass the title
+        message={alert.message}
+        variant={alert.variant}
+        show={alert.show}
+        onClose={handleCloseAlert} //Handle alert closure
       />
       <Modal.Body>
         <div className="container mt-3">
@@ -158,7 +134,9 @@ function EditTaskModal({ taskData, stateEditTaskModal, handleCloseEditTaskModal 
                   <div className="col-2">
                     <button
                       className={`mt-3 border-0 btn ${
-                        selectedDateButton === "hoy" ? "btn-primary" : "btn-secondary"
+                        selectedDateButton === "hoy"
+                          ? "btn-primary"
+                          : "btn-secondary"
                       }`}
                       onClick={(event) => handleButtonDate(event, "hoy")}
                     >
@@ -168,7 +146,9 @@ function EditTaskModal({ taskData, stateEditTaskModal, handleCloseEditTaskModal 
                   <div className="col-4 col-md-3">
                     <button
                       className={`mt-3 border-0 btn ${
-                        selectedDateButton === "mañana" ? "btn-primary" : "btn-secondary"
+                        selectedDateButton === "mañana"
+                          ? "btn-primary"
+                          : "btn-secondary"
                       }`}
                       onClick={(event) => handleButtonDate(event, "mañana")}
                     >
@@ -196,7 +176,9 @@ function EditTaskModal({ taskData, stateEditTaskModal, handleCloseEditTaskModal 
                   <div className="col-2">
                     <button
                       className={`border-0 btn ${
-                        selectedPriorityButton === "Low" ? "btn-success" : "btn-secondary"
+                        selectedPriorityButton === "Low"
+                          ? "btn-success"
+                          : "btn-secondary"
                       }`}
                       onClick={(event) => handleButtonPriority(event, "Low")}
                     >
@@ -206,7 +188,9 @@ function EditTaskModal({ taskData, stateEditTaskModal, handleCloseEditTaskModal 
                   <div className="col-3">
                     <button
                       className={`border-0 btn ${
-                        selectedPriorityButton === "Medium" ? "btn-warning" : "btn-secondary"
+                        selectedPriorityButton === "Medium"
+                          ? "btn-warning"
+                          : "btn-secondary"
                       }`}
                       onClick={(event) => handleButtonPriority(event, "Medium")}
                     >
@@ -216,7 +200,9 @@ function EditTaskModal({ taskData, stateEditTaskModal, handleCloseEditTaskModal 
                   <div className="col-3 p-0">
                     <button
                       className={`border-0 btn ${
-                        selectedPriorityButton === "Hard" ? "btn-danger" : "btn-secondary"
+                        selectedPriorityButton === "Hard"
+                          ? "btn-danger"
+                          : "btn-secondary"
                       }`}
                       onClick={(event) => handleButtonPriority(event, "Hard")}
                     >

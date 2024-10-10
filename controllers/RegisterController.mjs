@@ -32,7 +32,7 @@ export const RegisterController = async (req, res) => {
         });
 
        //Responds successfully if the insertion was successful
-        res.status(201).json({ success: true, message: "Usuario registrado correctamente." });
+        res.status(201).json({ success: true, message: `El usuario: ${name}  se ha registrado correctamente.` });
     } catch (error) {
         console.error("Error guardando el usuario:", error); //Error log for the server
 

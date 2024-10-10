@@ -21,13 +21,16 @@ html, body {
 
 /* Estilo para el fondo */
 .background-image {
-  width: 100vw; /* Asegura que ocupe todo el ancho de la ventana */
-  height: 100vh; /* Asegura que ocupe todo el alto de la ventana */
+  width: 100%; /* Asegura que ocupe todo el ancho de la ventana */
+  height: 100%; /* Asegura que ocupe todo el alto de la ventana */
 
   background-size: cover; /* Ajusta la imagen al tamaño del contenedor */
   background-position: center; /* Centra la imagen */
 }
-
+.h-cols {
+  max-height: 80vh; /* Limita la altura máxima */
+  overflow-y: auto; /* Habilita el scroll vertical */
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
@@ -57,10 +60,10 @@ code {
   .notebookImg {
     visibility: hidden;
   }
-  
+
   .frase {
     visibility: hidden;
-  } 
+  }
 }
 
 
@@ -127,7 +130,7 @@ code {
 /*watchNotesAndTasks*/
 .boxx {
   height: 15rem;
-  overflow: hidden; 
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
@@ -135,12 +138,12 @@ code {
 
 .boxx .col-12 p {
   margin: 0;
-  width: 100%; 
+  width: 100%;
   word-wrap: break-word;
 }
 
 @media (max-width: 575.98px) {
- /* 
+ /*
   .dateWidth{
     width:50%;
   } */
@@ -154,7 +157,7 @@ code {
 
   .hide-colum{
     content-visibility: hidden;  }
-  
+
 }
 
 .pointer{

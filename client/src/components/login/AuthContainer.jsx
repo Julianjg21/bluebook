@@ -7,15 +7,15 @@ function AuthContainer() {
 
   return (
     <div className="p-0  ">
-      <div className="row">
+      <div className="row d-none d-sm-block">
         <div className="col-5"></div>
         <div className="col-5"></div>
-        <div className="col-2 mt-5"></div>
+        <div className="col-2 mt-0 mt-md-5"></div>
       </div>
       <div className="row">
         <div className="col-3"></div>
         <div className="col-6 bg-white text-info align-content-center border border-1 border-primary auth-cols rounded-1">
-          <h1 className="fs-6 text-primary mt-2  text-center">Blue NoteBook</h1>
+          <h1 className="fs-6 text-primary mt-0 mt-md-2  text-center">Blue NoteBook</h1>
         </div>
         <div className="col-3"></div>
       </div>
@@ -36,7 +36,7 @@ function AuthContainer() {
                 Iniciar Sesion
               </button>
             </div>
-  
+
           </div>
         </div>
         <div className="col-4"></div>

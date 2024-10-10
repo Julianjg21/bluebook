@@ -3,7 +3,6 @@ import db from "../dataBase/DbConnection.mjs";//Import the connection to the dat
 // Controlador para guardar una nueva tarea
 export const SaveTaskController = (req, res) => {
     const { title, description, due_date, priority, user_id } = req.body;//Extract data from the request body
-
    //Verify that all fields are provided
     if (!title || !description || !due_date || !priority || !user_id) {
         return res.status(400).json({
@@ -86,7 +85,6 @@ export const EditTaskController = async (req, res) => {
 //Handler to delete a task
 export const deleteTaskController = async (req, res) => {
     const id = parseInt(req.params.id, 10); //Get the task ID from the route parameters
-
 //Verify that the ID is a valid number
     if (isNaN(id)) {
         return res.status(400).json({ message: "ID inválido" });

@@ -9,9 +9,9 @@ import RegisterRoute from "./routes/RegisterRoute.mjs";
 import NotesRoute from "./routes/ManageNotesRoute.mjs";
 import bodyParser from 'body-parser';
 import TasksRoute from './routes/ManageTasksRoute.mjs';
-
+import ResetPassword from './routes/ResetPasswordRoute.mjs';
 //Load environment variables from .env file
-dotenv.config({ path: "/configs.env" });
+dotenv.config({ path: "/configs.env" })
 dotenv.config();
 
 // Inicializa la aplicación Express
@@ -43,6 +43,7 @@ app.use('/auth', LoginRoute); //Path for login
 app.use('/createUser', RegisterRoute); //Path for user registration
 app.use('/manageNotes', NotesRoute); //Route to manage notes
 app.use('/manageTasks', TasksRoute); //Route to manage tasks
+app.use('/resetPassword', ResetPassword); //Route to manage tasks
 
 //Database connection management
 db.on("error", (err) => {

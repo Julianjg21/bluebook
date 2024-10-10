@@ -16,8 +16,6 @@ function WatchTasksAndNotes() {
   const { tasksList, refreshTasks } = FetchGetTasks();
   // State to control the visibility of the note modal
   const [showNote, setShowNote] = useState(false);
-  // State to hold notes data
-  const [notes, setNotes] = useState([]);
   // States to hold note title, description, and ID for editing/deleting
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
@@ -48,17 +46,18 @@ function WatchTasksAndNotes() {
     setId(note.id);
     setShowNote(true);
   };
+
   const handleShowNoteClose = () => setShowNote(false);
 
   // Fetch notes from the server when the component mounts
   useEffect(() => {
-    setNotes(getNotes);
     refreshNotes();
-  }, [getNotes, refreshNotes]); // Dependency array to re-fetch notes when they change
+    refreshTasks();
+  }, [refreshNotes, refreshTasks]); // Dependency array to re-fetch notes when they change
 
   // Function to handle note editing
   const handleEditeNote = () => {
-    navigate("/home/WatchNotes"); // Navigate to the watch notes page
+    navigate("/main/home/WatchNotes"); // Navigate to the watch notes page
     dispatch({
       type: "EDIT_NOTE_STATE",
       payload: {
@@ -77,10 +76,7 @@ function WatchTasksAndNotes() {
     handleShowNoteClose(); // Close note modal after deletion
   };
 
-  // Fetch tasks from the server when the component mounts
-  useEffect(() => {
-    refreshTasks();
-  }, [refreshTasks]); // Dependency array to re-fetch tasks when they change
+
 
   return (
     <div className="container-fluid">
@@ -105,8 +101,8 @@ function WatchTasksAndNotes() {
                   <div className="col-12 ">
                     <div className="container">
                       <div className="row">
-                        {notes.length > 0 ? (
-                          notes.map((note, index) => (
+                        {getNotes.length > 0 ? (
+                          getNotes.map((note, index) => (
                             <React.Fragment key={index}>
                               <div
                                 className="col-4 col-sm-2 shadow pointer mt-2 boxx bg-light rounded"

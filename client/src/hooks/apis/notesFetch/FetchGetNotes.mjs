@@ -4,37 +4,36 @@ import Cookies from "js-cookie";
 import API_ROUTES from "../../../configs/ApiEndPoints.mjs";
 
 const FetchGetNotes = () => {
-  const [getNotes, setGetNotes] = useState([]); //Estado para las notas
-  const [loading, setLoading] = useState(true); // Estado de carga
-  const [error, setError] = useState(null); // Estado de error
+  const [getNotes, setGetNotes] = useState([]); //Status for notes
+  const [loading, setLoading] = useState(true); //Loading status
+  const [error, setError] = useState(null); //Error status
 
-  // Función para obtener las notas desde la API
+  //Function to get the notes from the API
   const handleGetNotes = async () => {
-    const userData = JSON.parse(Cookies.get("userData")); // Obtener datos del usuario
-    const user_id = userData.id; // Extraer el ID del usuario
+    const userData = JSON.parse(Cookies.get("userData")); //Get user data
+    const user_id = userData.id; //Extract the user ID
 
     try {
-      setLoading(true); // Iniciar estado de carga
+      setLoading(true); //Start loading state
 
       const getData = await axios.get(API_ROUTES.getNotes, {
-        params: { user_id }, // Pasar user_id como parámetro
+        params: { user_id }, //Pass user_id as parameter
       });
 
-      setGetNotes(getData.data.notes); // Actualizar las notas
-      setError(null); // Resetear error en caso de éxito
+      setGetNotes(getData.data.notes); //Update notes
+      setError(null); //Reset error on success
     } catch (error) {
-      setError(error.response ? error.response.data : error.message); // Guardar error
+      setError(error.response ? error.response.data : error.message); //Save error
     } finally {
-      setLoading(false); // Finalizar estado de carga
+      setLoading(false); //End loading status
     }
-    handleGetNotes();
   };
 
-  /* useEffect(() => {
-     // Llamar a la función para obtener las notas al montar el componente
-  }, []); */ // Solo una vez al montar
+  /*useEffect(() => {
+     //Call the function to get the notes when mounting the component
+  }, []); */ //Only once when mounting
 
-  // Retorna las notas, el estado de carga, error y una función para refrescar
+  //Returns notes, loading status, error and a refresh function
   return { getNotes, loading, error, refreshNotes: handleGetNotes };
 };
 

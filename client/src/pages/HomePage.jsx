@@ -35,7 +35,7 @@ function HomePage() {
 
   // Function to navigate to different routes based on button clicks
   const handleButtonClick = (route) => {
-    navigate(`/home/${route}`);
+    navigate(`/main/home/${route}`);
   };
 
   return (

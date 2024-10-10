@@ -12,18 +12,18 @@ import HomePage from "./pages/HomePage";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App ">
       <Router>
         <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          
+          <Route path="/main/*" element={<LoginPage />} />
+
         {/*Main route that handles private routes */}
           <Route path="/" element={<PrivateRoute />}>
            {/*Automatically redirect from "/" to "/home" */}
-            <Route index element={<Navigate to="/home" replace />} />
-            
+            <Route index element={<Navigate to="/main/home" replace />} />
+
          {/*Defines the parent route with "/*" suffix to allow child routes */}
-            <Route path="home/*" element={<HomePage />} />
+            <Route path="/main/home/*" element={<HomePage />} />
           </Route>
         </Routes>
       </Router>

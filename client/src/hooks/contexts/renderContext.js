@@ -27,6 +27,10 @@ const RenderProvider = ({ children }) => {
       case "RegisterForm":
         setComponent("RegisterForm");
         break;
+      // Sets the current component to 'RegisterForm' when requested.
+      case "ResetPassword":
+        setComponent("ResetPassword");
+        break;
 
       // Default case does nothing if an unrecognized parameter is received.
       default:

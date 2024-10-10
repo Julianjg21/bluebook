@@ -1,19 +1,11 @@
 import React, { useState } from "react";
 import { Modal, ModalHeader } from "react-bootstrap";
 import Cookies from "js-cookie";
-import axios from "axios";
 import CustomAlert from "../../Alerts/CustomAlert"; // Componente de alerta personalizada
-import API_ROUTES from "../../../configs/ApiEndPoints.mjs";
+import FetchAddTasks from "../../../hooks/apis/tasksFetch/FetchAddTasks.mjs";
 
 function NewTaskModal({ stateNewTaskModal, handleNewTaskModalClose }) {
-
-  //State to handle alerts
-  const [alert, setAlert] = useState({
-    show: false,
-    title: '',
-    message: '',
-    variant: ''
-  });
+  const { alert, addTask, handleCloseAlert } = FetchAddTasks();
 
   //States to handle the form fields of the new task
   const [title, setTitle] = useState("");
@@ -21,14 +13,14 @@ function NewTaskModal({ stateNewTaskModal, handleNewTaskModalClose }) {
   const [due_date, setDue_date] = useState();
   const [priority, setPriority] = useState("");
 
- //States to handle date and priority button selection
+  //States to handle date and priority button selection
   const [selectedDateButton, setSelectedDateButton] = useState();
   const [selectedPriorityButton, setSelectedPriorityButton] = useState();
-//Handles the selection of the due date (today or tomorrow)
+  //Handles the selection of the due date (today or tomorrow)
   const handleButtonDate = (event, buttonId) => {
     event.preventDefault();
     setSelectedDateButton(buttonId);
-    
+
     if (buttonId === "hoy") {
       const today = new Date().toISOString().split("T")[0];
       setDue_date(today); //Assign today's date
@@ -43,11 +35,11 @@ function NewTaskModal({ stateNewTaskModal, handleNewTaskModalClose }) {
   //Handles the selection of priority level (low, medium or high)
   const handleButtonPriority = (event, buttonId) => {
     event.preventDefault();
-    setSelectedPriorityButton(buttonId);//Assigns the selected button
+    setSelectedPriorityButton(buttonId); //Assigns the selected button
     setPriority(buttonId); //Set the priority
   };
 
-//Handle form submission
+  //Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -63,57 +55,19 @@ function NewTaskModal({ stateNewTaskModal, handleNewTaskModalClose }) {
       priority,
       user_id,
     };
-
-    try {
-    
-      const sendData = await axios.post(
-        API_ROUTES.addTasks,
-        data
-      );
-      console.log(sendData.data);
-
-    //Close the modal and show a success alert
-      handleNewTaskModalClose();
-      setAlert({
-        show: true,
-        title: 'Éxito',
-        message: '¡Tarea registrada con éxito!',
-        variant: 'success'
-      });
-
-  //Hide the alert after 3 seconds
-      setTimeout(() => setAlert({ ...alert, show: false }), 3000);
-
-     //Clear the form fields
+    console.log(data);
+    const addTaskResponse = await addTask(data);
+    console.log(addTaskResponse.status);
+    if (addTaskResponse.status === 200) {
+      //Clear the form fields
       setTitle("");
       setDescription("");
       setDue_date("");
       setPriority("");
       setSelectedDateButton("");
       setSelectedPriorityButton("");
-
-    } catch (error) {
-      console.error(
-        "El servidor no ha funcionado",
-        error.response ? error.response.data : error.message
-      );
-
-    //Show an error alert if something fails
-      setAlert({
-        show: true,
-        title: 'Error',
-        message: 'No se ha podido registrar la tarea. Intenta nuevamente.',
-        variant: 'danger'
-      });
-
-    //Hide the alert after 5 seconds
-      setTimeout(() => setAlert({ ...alert, show: false }), 5000);
     }
-  };
-
-//Close the alert
-  const handleCloseAlert = () => {
-    setAlert({ ...alert, show: false });
+    console.log("this:", title, description, due_date, priority, user_id);
   };
 
   return (
@@ -122,7 +76,7 @@ function NewTaskModal({ stateNewTaskModal, handleNewTaskModalClose }) {
         <ModalHeader closeButton>
           <Modal.Title className="fs-5 text-secondary">Nueva Tarea</Modal.Title>
         </ModalHeader>
-       
+
         <Modal.Body>
           <div className="container mt-3">
             <form className="form" onSubmit={handleSubmit}>
@@ -139,6 +93,7 @@ function NewTaskModal({ stateNewTaskModal, handleNewTaskModalClose }) {
                         onChange={(event) => setTitle(event.target.value)}
                         required
                         maxLength="40"
+                        value={title}
                       />
                     </div>
                   </div>
@@ -156,6 +111,7 @@ function NewTaskModal({ stateNewTaskModal, handleNewTaskModalClose }) {
                         className="w-100 p-3"
                         onChange={(event) => setDescription(event.target.value)}
                         required
+                        value={description}
                       />
                     </div>
                   </div>
@@ -171,7 +127,9 @@ function NewTaskModal({ stateNewTaskModal, handleNewTaskModalClose }) {
                     <div className="col-2">
                       <button
                         className={`mt-3 border-0 btn ${
-                          selectedDateButton === "hoy" ? "btn-primary" : "btn-secondary"
+                          selectedDateButton === "hoy"
+                            ? "btn-primary"
+                            : "btn-secondary"
                         }`}
                         onClick={(event) => handleButtonDate(event, "hoy")}
                       >
@@ -181,7 +139,9 @@ function NewTaskModal({ stateNewTaskModal, handleNewTaskModalClose }) {
                     <div className="col-4 col-md-3">
                       <button
                         className={`mt-3 border-0 btn ${
-                          selectedDateButton === "mañana" ? "btn-primary" : "btn-secondary"
+                          selectedDateButton === "mañana"
+                            ? "btn-primary"
+                            : "btn-secondary"
                         }`}
                         onClick={(event) => handleButtonDate(event, "mañana")}
                       >
@@ -210,7 +170,9 @@ function NewTaskModal({ stateNewTaskModal, handleNewTaskModalClose }) {
                     <div className="col-2">
                       <button
                         className={`border-0 btn ${
-                          selectedPriorityButton === "Low" ? "btn-success" : "btn-secondary"
+                          selectedPriorityButton === "Low"
+                            ? "btn-success"
+                            : "btn-secondary"
                         }`}
                         onClick={(event) => handleButtonPriority(event, "Low")}
                       >
@@ -220,9 +182,13 @@ function NewTaskModal({ stateNewTaskModal, handleNewTaskModalClose }) {
                     <div className="col-3">
                       <button
                         className={`border-0 btn ${
-                          selectedPriorityButton === "Medium" ? "btn-warning" : "btn-secondary"
+                          selectedPriorityButton === "Medium"
+                            ? "btn-warning"
+                            : "btn-secondary"
                         }`}
-                        onClick={(event) => handleButtonPriority(event, "Medium")}
+                        onClick={(event) =>
+                          handleButtonPriority(event, "Medium")
+                        }
                       >
                         Media
                       </button>
@@ -230,7 +196,9 @@ function NewTaskModal({ stateNewTaskModal, handleNewTaskModalClose }) {
                     <div className="col-3 p-0">
                       <button
                         className={`border-0 btn ${
-                          selectedPriorityButton === "Hard" ? "btn-danger" : "btn-secondary"
+                          selectedPriorityButton === "Hard"
+                            ? "btn-danger"
+                            : "btn-secondary"
                         }`}
                         onClick={(event) => handleButtonPriority(event, "Hard")}
                       >
@@ -243,7 +211,10 @@ function NewTaskModal({ stateNewTaskModal, handleNewTaskModalClose }) {
 
               <div className="row mt-4">
                 <div className="col-12">
-                  <button type="submit" className="btn btn-outline-primary w-100">
+                  <button
+                    type="submit"
+                    className="btn btn-outline-primary w-100"
+                  >
                     Guardar
                   </button>
                 </div>
@@ -253,7 +224,7 @@ function NewTaskModal({ stateNewTaskModal, handleNewTaskModalClose }) {
         </Modal.Body>
 
         {/*Custom alert component*/}
-        <CustomAlert 
+        <CustomAlert
           title={alert.title}
           message={alert.message}
           variant={alert.variant}
@@ -261,9 +232,6 @@ function NewTaskModal({ stateNewTaskModal, handleNewTaskModalClose }) {
           onClose={handleCloseAlert}
         />
       </Modal>
-
-      
-     
     </>
   );
 }

@@ -22,20 +22,18 @@ function WatchNotes() {
     id: null,
   });
 
-  // State to store all notes
-  const [notes, setNotes] = useState([]);
+
 
   // State to toggle between viewing all notes and editing a single note
   const [showSaveData, setShowSaveData] = useState(true);
 
   // Fetch notes from the server when the component mounts
   useEffect(() => {
-    setNotes(getNotes);
     refreshNotes();
-  }, [getNotes, refreshNotes]); // Dependency array to re-fetch notes when they change
+  }, [ refreshNotes]); // Dependency array to re-fetch notes when they change
 
   // Handle editing a note from the home page
-  useEffect(() => {
+useEffect(() => {
     if (state.editNoteState.editNoteFromHome) {
       setNoteData({
         description: state.editNoteState.editDescription.description,
@@ -62,7 +60,6 @@ function WatchNotes() {
     const data = noteData;
     e.preventDefault();
     await updateNote(noteData.id, data);
-    refreshNotes();
   };
 
   return (
@@ -76,8 +73,8 @@ function WatchNotes() {
         <Button className="w-100" onClick={() => setShowSaveData(true)}>
           Nueva Nota
         </Button>
-        {notes.length > 0 ? (
-          notes.map((note) => (
+        {getNotes.length > 0 ? (
+          getNotes.map((note) => (
             <div key={note.id} className="list-group">
               <button
                 type="button"
